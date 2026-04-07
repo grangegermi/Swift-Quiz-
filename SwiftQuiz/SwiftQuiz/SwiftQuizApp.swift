@@ -6,9 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct SwiftQuizApp: App {
+    
+    init() {
+           FirebaseApp.configure()
+        print("Firebase OK")
+       }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
