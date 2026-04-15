@@ -12,8 +12,7 @@ import FirebaseCore
 struct SwiftQuizApp: App {
     
     init() {
-           FirebaseApp.configure()
-        print("Firebase OK")
+        FirebaseApp.configure()
        }
     
     var body: some Scene {

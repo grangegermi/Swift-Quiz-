@@ -6,66 +6,68 @@
 //
 
 import SwiftUI
+import Combine
 
 struct QuizView: View {
+    var quiz: QuizModel
     
     var body: some View {
         VStack{
             ZStack{
-                LiquidGlassView()
+                RectangleView()
                     .frame(width: 280, height: 160)
-                Text("{ Hello, World! }")
+                Text("{\(quiz.question)}")
                     .padding()
             }
             Spacer()
             VStack{
-                ZStack{
-                    LiquidGlassView()
-                        .frame(width:280, height: 50)
-                        .padding(.vertical, 10)
-                    Text("{ Hello, World! }")
-                        .foregroundColor(.white)
-                }
-                ZStack{
-                    LiquidGlassView()
-                        .frame(width:280, height: 50)
-                        .padding(.vertical, 10)
-                    Text("{ Hello, World! }")
-                        .foregroundColor(.white)
-                }
-                ZStack{
-                    LiquidGlassView()
-                        .frame(width:280, height: 50)
-                        .padding(.vertical, 10)
-                    Text("{ Hello, World! }")
-                        .foregroundColor(.white)
-                }
-                ZStack{
-                    LiquidGlassView()
-                        .frame(width:280, height: 50)
-                        .padding(.vertical, 10)
-                    Text("{ Hello, World! }")
-                        .foregroundColor(.white)
+                ForEach(quiz.options, id:\.self) { quiz in
+                    ZStack{
+                        Text("\(quiz)")
+                            .foregroundColor(.white)
+                        RectangleView()
+                            .frame(width:280, height: 50)
+                            .padding(.vertical, 10)
+                    }
                 }
             }
             Spacer()
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            LinearGradient(colors: [.blackApp, .darkBlueApp, .blueApp],
-                           startPoint: .top, endPoint: .bottom)
-        )
+        .background(Color.darkBlueApp)
     }
 }
 
-struct LiquidGlassView: View {
+struct RectangleView: View {
     var body: some View {
-        RoundedRectangle(cornerRadius: 16)
-            .glassEffect(in: .rect(cornerRadius: 16))
+        RoundedRectangle(cornerRadius: 16, style: .continuous)
+            .fill(.ultraThinMaterial)
+            .overlay(
+                LinearGradient(
+                    colors: [
+                        Color.white.opacity(0.4),
+                        Color.white.opacity(0.7)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(
+                        LinearGradient(
+                            colors: [.white.opacity(0.55), .blue.opacity(0.35), .white.opacity(0.20)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1.2
+                    )
+            )
     }
 }
 
 #Preview {
-    QuizView()
+    QuizView(quiz: QuizModel.init(question: "", options: [], correct: 0))
 }
